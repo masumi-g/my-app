@@ -1,9 +1,41 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+// 画面の振り分け担当。
+//- Routesでルートをまとめる
+//- RouteでURLと画面を関連付ける
+
 import './App.css'
 
+import { Routes, Route, NavLink } from 'react-router-dom';
+import Home  from "./components/pages/Home";
+import Users from "./components/pages/users";
+import UserDetail from "./components/pages/UserDetail";
+
+function App() {
+  return (
+    <>
+      <nav>
+        <NavLink to="/">ホーム</NavLink>
+        {' | '}
+        <NavLink to="/users">ユーザ一覧</NavLink>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/users/:userId" element={<UserDetail />} />
+      </Routes>
+    </>
+  );
+}
+
+export default App;
+
+
+
+
+
+
+/* 
+//Sample Code
 function App() {
   const [count, setCount] = useState(0)
 
@@ -120,3 +152,4 @@ function App() {
 }
 
 export default App
+*/
