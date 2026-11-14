@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <nav>
-        <NavLink to="/">ホーム</NavLink>
+        <NavLink to="/" end>ホーム</NavLink>
         {' | '}
         <NavLink to="/users">ユーザ一覧</NavLink>
       </nav>
