@@ -9,6 +9,10 @@ import Home  from "./components/pages/Home";
 import Users from "./components/pages/users";
 import UserDetail from "./components/pages/UserDetail";
 
+import Articles from "./components/pages/Articles";
+import ArticleDetail from "./components/pages/ArticleDetail";
+import ArticleForm from "./components/pages/ArticleForm";
+
 function App() {
   return (
     <>
@@ -16,12 +20,17 @@ function App() {
         <NavLink to="/" end>ホーム</NavLink>
         {' | '}
         <NavLink to="/users">ユーザ一覧</NavLink>
+        {' | '}
+        <NavLink to="/articles">記事一覧</NavLink>
       </nav>
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:userId" element={<UserDetail />} />
+        <Route path="/articles" element={<Articles />} />
+        <Route path="/articles/new" element={<ArticleForm />} />
+        <Route path="/articles/:articleId" element={<ArticleDetail />} />
       </Routes>
     </>
   );

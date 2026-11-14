@@ -1,0 +1,25 @@
+{
+  "articles": [
+    {
+      "id": "1",
+      "title": "React Hooksの基本",
+      "content": "useStateを使うと、コンポーネント内で状態を管理できます。",
+      "author": "Tech Taro",
+      "createdAt": "2026-11-14T09:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "title": "React Routerで画面を切り替える",
+      "content": "RouteにURLと画面を設定し、Linkから画面を移動できます。",
+      "author": "Tech Hanako",
+      "createdAt": "2026-11-14T10:00:00.000Z"
+    },
+    {
+      "title": "Propsから別の変数名でデータを取り出す",
+      "author": "Tech Ichiro",
+      "content": "const {\n  name: userName,\n  profile: { hobby: userHobby }\n} = user;\n\n元のプロパティ\t変数名\nname\tuserName\nhobby\tuserHobby\n\nプロパティ名: 変数名 という形です。",
+      "createdAt": "2026-11-14T14:25:20.009Z",
+      "id": "5SWJaL9"
+    }
+  ]
+}

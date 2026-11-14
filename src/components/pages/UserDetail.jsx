@@ -1,31 +1,59 @@
-import { useParams } from 'react-router-dom';
-import { users } from '/src/components/data/users';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-function UserDetail() {
+function ArticleDetail() {
+  const { articleId } = useParams();
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // URLに含まれるuserIdを取得する
-  const { userId, userName } = useParams();
+  useEffect(() => {
+    fetch(`http://localhost:3000/articles/${articleId}`)
+      .then((response) => {
+        if (response.status === 404) {
+          throw new Error('記事が見つかりませんでした。');
+        }
+        if (!response.ok) {
+          throw new Error('記事の読み込みに失敗しました。');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setArticle(data);
+      })
+      .catch((error) => {
+        setError(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [articleId]);
 
-// IDを使って該当するユーザーを探す
-  const user = users.find(
-    (user) => user.id === Number(userId)
-  );
+  if (loading) {
+    return <p>記事を読み込み中です...</p>;
+  }
 
-  
+  if (error) {
+    return (
+      <main>
+        <p>{error}</p>
+        <Link to="/articles">記事一覧に戻る</Link>
+      </main>
+    );
+  }
+
   return (
-    <div>
-      <h1>ユーザー詳細画面</h1>
+    <main>
+      <article>
+        <h1>{article.title}</h1>
+        <p>投稿者：{article.author}</p>
+        <p>投稿日：{new Date(article.createdAt).toLocaleDateString('ja-JP')}</p>
+        <p>{article.content}</p>
+      </article>
 
-      {user ? (
-        <>
-          <p>ユーザーID：{user.id}</p>
-          <p>ユーザー名：{user.name}</p>
-        </>
-      ) : (
-        <p>ユーザーが見つかりません。</p>
-      )}
-    </div>
+      <Link to="/articles">記事一覧に戻る</Link>
+    </main>
   );
 }
 
-export default UserDetail;
+export default ArticleDetail;
