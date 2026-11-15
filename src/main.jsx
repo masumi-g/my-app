@@ -8,6 +8,7 @@ import './index.css';
 import App from './App.jsx';
 
 import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext.jsx';
 
 // message.jsを読み込む
 import { message } from './message.js';
@@ -18,7 +19,9 @@ console.log(message);
 createRoot(document.getElementById('root')).render( //アプリを起動する
   <StrictMode>
     <BrowserRouter> 
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 );

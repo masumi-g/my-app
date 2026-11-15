@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../api/apiConfig';
 import { useEffect, useState } from 'react';
 
 export function useArticles() {
@@ -8,7 +9,7 @@ export function useArticles() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch('http://localhost:3000/articles', {
+   fetch(`${API_BASE_URL}/articles`, {
       cache: 'no-store',
       signal: controller.signal,
     })

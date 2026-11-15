@@ -3,35 +3,45 @@
 //- RouteでURLと画面を関連付ける
 
 import './App.css'
-
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
+import { Navigate, Routes, Route, NavLink } from 'react-router-dom';
 import Home  from "./components/pages/Home";
 import Users from "./components/pages/users";
 import UserDetail from "./components/pages/UserDetail";
-
+import Login from './components/pages/Login';
 import Articles from "./components/pages/Articles";
 import ArticleDetail from "./components/pages/ArticleDetail";
 import ArticleForm from "./components/pages/ArticleForm";
 
 function App() {
+  const { user } = useAuth();
   return (
     <>
       <nav>
-        <NavLink to="/" end>ホーム</NavLink>
+        <NavLink to="/" end>記事一覧</NavLink>
         {' | '}
-        <NavLink to="/users">ユーザ一覧</NavLink>
-        {' | '}
-        <NavLink to="/articles">記事一覧</NavLink>
+        <NavLink to="/login">
+          {user ? `アカウント（${user.name}）` : 'ログイン'}
+        </NavLink>
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/users/:userId" element={<UserDetail />} />
+        {/* 考査課題：記事一覧をTOPページにする */}
+        <Route path="/" element={<Articles />} />
         <Route path="/articles" element={<Articles />} />
-        <Route path="/articles/new" element={<ArticleForm />} />
+        <Route path="/articles/new" element={user ? <ArticleForm /> : <Navigate to="/" replace />} />
         <Route path="/articles/:articleId" element={<ArticleDetail />} />
-        <Route path="/articles/:articleId/edit" element={<ArticleForm />} />
+        <Route
+          path="/articles/:articleId/edit"
+          element={user ? <ArticleForm /> : <Navigate to="/" replace />}
+        />
+
+        {/* 以前の実習ページ：ファイルは残して別URLに置く */}
+        <Route path="/practice" element={<Home />} />
+        <Route path="/practice/users" element={<Users />} />
+        <Route path="/practice/users/:userId" element={<UserDetail />} />
+
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );

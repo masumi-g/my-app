@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useArticle } from '../../hooks/useArticle';
+import { API_BASE_URL } from '../../api/apiConfig';
+import { useAuth } from '../../contexts/AuthContext';
 
 function ArticleDetail() {
+  const { user } = useAuth();
   const { articleId } = useParams();
   const { article, loading, error } = useArticle(articleId);
 
@@ -20,7 +23,7 @@ function ArticleDetail() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/articles/${articleId}`,
+       `${API_BASE_URL}/articles/${articleId}`,
         { method: 'DELETE' },
       );
 
@@ -71,29 +74,33 @@ function ArticleDetail() {
         </p>
       </article>
 
-      {deleteError && (
-        <p className="mt-4 text-sm text-red-700" role="alert">
-          {deleteError}
-        </p>
-      )}
+      {user?.name === article.author && (
+      <>
+        {deleteError && (
+          <p className="mt-4 text-sm text-red-700" role="alert">
+            {deleteError}
+          </p>
+        )}
 
-      <div className="mt-6 flex flex-wrap items-center gap-3">
-        <Link
-          to={`/articles/${article.id}/edit`}
-          className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white no-underline hover:bg-blue-700"
-        >
-          この記事を編集
-        </Link>
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <Link
+            to={`/articles/${article.id}/edit`}
+            className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white no-underline hover:bg-blue-700"
+          >
+            この記事を編集
+          </Link>
 
-        <button
-          type="button"
-          onClick={handleDelete}
-          disabled={isDeleting}
-          className="rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700 disabled:opacity-50"
-        >
-          {isDeleting ? '削除中...' : 'この記事を削除'}
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="rounded-lg bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700 disabled:opacity-50"
+          >
+            {isDeleting ? '削除中...' : 'この記事を削除'}
+          </button>
+        </div>
+      </>
+)}
 
       <p className="mt-5">
         <Link

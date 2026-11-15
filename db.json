@@ -3,7 +3,7 @@
     {
       "id": "1",
       "title": "React Hooksの基本",
-      "content": "useStateを使うと、コンポーネント内で状態を管理できます。（importを忘れないこと）",
+      "content": "useStateを使うと、コンポーネント内で状態を管理できます。（importを忘れないこと!）",
       "author": "Tech Taro",
       "createdAt": "2026-11-14T09:00:00.000Z"
     },
@@ -20,13 +20,6 @@
       "content": "●オブジェクトの中に、さらにオブジェクトがある場合です\nconst user = {\n  name: \"山田太郎\",\n  profile: {\n    hobby: \"プログラミング\",\n    learning: \"React\"\n  }\n};\n\n\n●内側の値も取り出せます\nconst {\n  name,\n  profile: { hobby, learning }\n} = user;\n",
       "createdAt": "2026-11-15T06:35:02.988Z",
       "id": "RUJFrl5"
-    },
-    {
-      "title": "ZZZZZZ",
-      "author": "PPPPPPPPPPPPPPPp",
-      "content": "AAAAAAAAAAAAAAA\nBBBBBBBBBBBBBBbbb\nCCCCCCCCCCCCCCC",
-      "createdAt": "2026-11-15T13:00:22.142Z",
-      "id": "vkfUhSS"
     }
   ]
 }

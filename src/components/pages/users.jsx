@@ -9,7 +9,7 @@ function Users() {
         <p>登録されているユーザ情報です。</p>
         {users.map((user) => (
             <div key={user.id}>
-            <Link to={`/users/${user.id}`}>
+            <Link to={`/practice/users/${user.id}`}>
                 {user.name}
             </Link>
             </div>

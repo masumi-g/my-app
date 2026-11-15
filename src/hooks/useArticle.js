@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../api/apiConfig';
 import { useEffect, useState } from 'react';
 
 export function useArticle(articleId) {
@@ -17,7 +18,7 @@ export function useArticle(articleId) {
     setLoading(true);
     setError('');
 
-    fetch(`http://localhost:3000/articles/${articleId}`, {
+    fetch(`${API_BASE_URL}/articles/${articleId}`, {
       cache: 'no-store',
       signal: controller.signal,
     })

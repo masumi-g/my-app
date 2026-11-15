@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useArticle } from '../../hooks/useArticle';
+import { useAuth } from '../../contexts/AuthContext';
+import { API_BASE_URL } from '../../api/apiConfig';
 
 function ArticleForm() {
   const { articleId } = useParams();
   const isEditMode = Boolean(articleId);
   const navigate = useNavigate();
-
+  const { user } = useAuth();
   const {
     article: existingArticle,
     loading: isLoading,
@@ -15,7 +17,7 @@ function ArticleForm() {
 
   const [formData, setFormData] = useState({
     title: '',
-    author: '',
+    author: user?.name ?? '',
     content: '',
   });
  
@@ -24,14 +26,19 @@ function ArticleForm() {
 
 
  useEffect(() => {
-  if (!existingArticle) return;
-
-  setFormData({
-    title: existingArticle.title,
-    author: existingArticle.author,
-    content: existingArticle.content,
-  });
-}, [existingArticle]);
+  if (existingArticle) {
+    setFormData({
+      title: existingArticle.title,
+      author: existingArticle.author,
+      content: existingArticle.content,
+    });
+  } else if (user && !isEditMode) {
+    setFormData((current) => ({
+      ...current,
+      author: user.name,
+    }));
+  }
+}, [existingArticle, user, isEditMode]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -53,8 +60,8 @@ function ArticleForm() {
     try {
       const response = await fetch(
         isEditMode
-          ? `http://localhost:3000/articles/${articleId}`
-          : 'http://localhost:3000/articles',
+        ? `${API_BASE_URL}/articles/${articleId}`
+        : `${API_BASE_URL}/articles`,
         {
           method: isEditMode ? 'PATCH' : 'POST',
           headers: {
@@ -78,7 +85,7 @@ function ArticleForm() {
     }
   }
 
-  if (isLoading) {
+    if (isLoading) {
     return <p>記事を読み込み中です...</p>;
   }
 
@@ -89,6 +96,10 @@ function ArticleForm() {
         <Link to="/articles">記事一覧に戻る</Link>
       </main>
     );
+  }
+
+  if (isEditMode && user?.name !== existingArticle?.author) {
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -128,6 +139,7 @@ function ArticleForm() {
             value={formData.author}
             onChange={handleChange}
             required
+            readOnly={Boolean(user)}
           />
         </div>
 
