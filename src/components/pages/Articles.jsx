@@ -1,31 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useArticles } from '../../hooks/useArticles';
 
 function Articles() {
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { articles, loading, error } = useArticles();
   const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
- 
-    fetch('http://localhost:3000/articles')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('記事の読み込みに失敗しました。');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setArticles(data);
-      })
-      .catch((error) => {
-        setError(error.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
 
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
 

@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useArticle } from '../../hooks/useArticle';
 
 function ArticleDetail() {
   const { articleId } = useParams();
-  const [article, setArticle] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { article, loading, error } = useArticle(articleId);
 
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -37,44 +36,7 @@ function ArticleDetail() {
     }
   }
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    setLoading(true);
-    setError('');
-
-    fetch(`http://localhost:3000/articles/${articleId}`, {
-      cache: 'no-store',
-      signal: controller.signal,
-    })
-      .then((response) => {
-        if (response.status === 404) {
-          throw new Error('記事が見つかりませんでした。');
-        }
-        if (!response.ok) {
-          throw new Error('記事の読み込みに失敗しました。');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setArticle(data);
-      })
-      .catch((error) => {
-        if (error.name !== 'AbortError') {
-          setError(error.message);
-        }
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, [articleId]);
-
+  
   if (loading) {
     return <p>記事を読み込み中です...</p>;
   }

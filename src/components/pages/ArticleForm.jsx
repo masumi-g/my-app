@@ -1,45 +1,37 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useArticle } from '../../hooks/useArticle';
 
 function ArticleForm() {
   const { articleId } = useParams();
   const isEditMode = Boolean(articleId);
   const navigate = useNavigate();
 
+  const {
+    article: existingArticle,
+    loading: isLoading,
+    error: loadError,
+  } = useArticle(articleId);
+
   const [formData, setFormData] = useState({
     title: '',
     author: '',
     content: '',
   });
-  const [isLoading, setIsLoading] = useState(isEditMode);
+ 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loadError, setLoadError] = useState('');
   const [submitError, setSubmitError] = useState('');
 
-  useEffect(() => {
-    if (!articleId) return;
 
-    fetch(`http://localhost:3000/articles/${articleId}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('記事を読み込めませんでした。');
-        }
-        return response.json();
-      })
-      .then((article) => {
-        setFormData({
-          title: article.title,
-          author: article.author,
-          content: article.content,
-        });
-      })
-      .catch((error) => {
-        setLoadError(error.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [articleId]);
+ useEffect(() => {
+  if (!existingArticle) return;
+
+  setFormData({
+    title: existingArticle.title,
+    author: existingArticle.author,
+    content: existingArticle.content,
+  });
+}, [existingArticle]);
 
   function handleChange(event) {
     const { name, value } = event.target;
