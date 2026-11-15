@@ -31,6 +31,7 @@ function App() {
         <Route path="/articles" element={<Articles />} />
         <Route path="/articles/new" element={<ArticleForm />} />
         <Route path="/articles/:articleId" element={<ArticleDetail />} />
+        <Route path="/articles/:articleId/edit" element={<ArticleForm />} />
       </Routes>
     </>
   );

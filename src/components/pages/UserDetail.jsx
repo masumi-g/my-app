@@ -50,7 +50,7 @@ function ArticleDetail() {
         <p>投稿日：{new Date(article.createdAt).toLocaleDateString('ja-JP')}</p>
         <p>{article.content}</p>
       </article>
-
+      <Link to={`/articles/${article.id}/edit`}>この記事を編集</Link>
       <Link to="/articles">記事一覧に戻る</Link>
     </main>
   );

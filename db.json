@@ -3,7 +3,7 @@
     {
       "id": "1",
       "title": "React Hooksの基本",
-      "content": "useStateを使うと、コンポーネント内で状態を管理できます。",
+      "content": "useStateを使うと、コンポーネント内で状態を管理できます。（importを忘れないこと）",
       "author": "Tech Taro",
       "createdAt": "2026-11-14T09:00:00.000Z"
     },
@@ -15,11 +15,11 @@
       "createdAt": "2026-11-14T10:00:00.000Z"
     },
     {
-      "title": "Propsから別の変数名でデータを取り出す",
-      "author": "Tech Ichiro",
-      "content": "const {\n  name: userName,\n  profile: { hobby: userHobby }\n} = user;\n\n元のプロパティ\t変数名\nname\tuserName\nhobby\tuserHobby\n\nプロパティ名: 変数名 という形です。",
-      "createdAt": "2026-11-14T14:25:20.009Z",
-      "id": "5SWJaL9"
+      "title": "ネストしたオブジェクトの分割代入",
+      "author": "Tech Mie",
+      "content": "オブジェクトの中に、さらにオブジェクトがある場合です\n\nconst user = {\n  name: \"山田太郎\",\n  profile: {\n    hobby: \"プログラミング\",\n    learning: \"React\"\n  }\n};\n\n\n内側の値も取り出せます\n\nconst {\n  name,\n  profile: { hobby, learning }\n} = user;\n",
+      "createdAt": "2026-11-15T06:35:02.988Z",
+      "id": "RUJFrl5"
     }
   ]
 }

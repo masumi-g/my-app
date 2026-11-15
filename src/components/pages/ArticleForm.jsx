@@ -1,90 +1,182 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 function ArticleForm() {
+  const { articleId } = useParams();
+  const isEditMode = Boolean(articleId);
   const navigate = useNavigate();
-  const [error, setError] = useState('');
+
+  const [formData, setFormData] = useState({
+    title: '',
+    author: '',
+    content: '',
+  });
+  const [isLoading, setIsLoading] = useState(isEditMode);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [submitError, setSubmitError] = useState('');
+
+  useEffect(() => {
+    if (!articleId) return;
+
+    fetch(`http://localhost:3000/articles/${articleId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('記事を読み込めませんでした。');
+        }
+        return response.json();
+      })
+      .then((article) => {
+        setFormData({
+          title: article.title,
+          author: article.author,
+          content: article.content,
+        });
+      })
+      .catch((error) => {
+        setLoadError(error.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [articleId]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setFormData((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    const article = {
-      title: formData.get('title'),
-      author: formData.get('author'),
-      content: formData.get('content'),
-      createdAt: new Date().toISOString(),
-    };
-
     setIsSubmitting(true);
-    setError('');
+    setSubmitError('');
+
+    const article = isEditMode
+      ? formData
+      : { ...formData, createdAt: new Date().toISOString() };
 
     try {
-      const response = await fetch('http://localhost:3000/articles', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        isEditMode
+          ? `http://localhost:3000/articles/${articleId}`
+          : 'http://localhost:3000/articles',
+        {
+          method: isEditMode ? 'PATCH' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(article),
         },
-        body: JSON.stringify(article),
-      });
+      );
 
       if (!response.ok) {
-        throw new Error('記事を投稿できませんでした。');
+        throw new Error('記事を保存できませんでした。');
       }
 
-      navigate('/articles');
+      navigate(
+        isEditMode ? `/articles/${articleId}` : '/articles',
+      );
     } catch (error) {
-      setError(error.message);
+      setSubmitError(error.message);
     } finally {
       setIsSubmitting(false);
     }
   }
 
-  return (
-    <main>
-      <h1>記事を投稿</h1>
+  if (isLoading) {
+    return <p>記事を読み込み中です...</p>;
+  }
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">タイトル</label>
+  if (loadError) {
+    return (
+      <main>
+        <p>{loadError}</p>
+        <Link to="/articles">記事一覧に戻る</Link>
+      </main>
+    );
+  }
+
+  return (
+    <main className="mx-auto w-full max-w-3xl px-6 py-8 text-left">
+      <h1>{isEditMode ? '記事を編集' : '記事を投稿'}</h1>
+
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+      >
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-slate-700" 
+          htmlFor="title">タイトル</label>
           <input
+            className="w-full rounded-lg border border-slate-300 bg-white 
+            px-3 py-2 text-slate-900 outline-none focus:border-blue-500 
+            focus:ring-2 focus:ring-blue-200"
             id="title"
             name="title"
             type="text"
-            placeholder="例：React Hooksの基本"
+            value={formData.title}
+            onChange={handleChange}
             required
           />
         </div>
 
-        <div>
-          <label htmlFor="author">投稿者名</label>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-slate-700"
+          htmlFor="author">投稿者名</label>
           <input
+            className="w-full rounded-lg border border-slate-300 bg-white 
+            px-3 py-2 text-slate-900 outline-none focus:border-blue-500 
+            focus:ring-2 focus:ring-blue-200"
             id="author"
             name="author"
             type="text"
-            placeholder="例：Tech Taro"
+            value={formData.author}
+            onChange={handleChange}
             required
           />
         </div>
 
-        <div>
-          <label htmlFor="content">本文</label>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-slate-700"
+          htmlFor="content">本文</label>
           <textarea
+            className="w-full rounded-lg border border-slate-300 bg-white 
+            px-3 py-2 text-slate-900 outline-none focus:border-blue-500 
+            focus:ring-2 focus:ring-blue-200"
             id="content"
             name="content"
             rows="8"
-            placeholder="記事の内容を入力してください"
+            value={formData.content}
+            onChange={handleChange}
             required
           />
         </div>
 
-        {error && <p>{error}</p>}
+        {submitError && <p>{submitError}</p>}
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? '投稿中...' : '記事を投稿する'}
+        <button 
+        className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white 
+        hover:bg-blue-700 disabled:opacity-50"
+        type="submit" disabled={isSubmitting}>
+          {isSubmitting
+            ? '保存中...'
+            : isEditMode
+              ? '変更を保存'
+              : '記事を投稿する'}
         </button>
       </form>
+
+      <p className="mt-5">
+        <Link
+          to={isEditMode ? `/articles/${articleId}` : '/articles'}
+          className="text-blue-700 underline hover:text-blue-900"
+        >
+          キャンセル
+        </Link>
+      </p>
     </main>
   );
 }
