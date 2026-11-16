@@ -1,6 +1,0 @@
-npmコマンドが使えない！？
-where.exe node
-where.exe npm
-
-JSONサーバ起動コマンド:
-npm exec -- json-server --watch db.json
