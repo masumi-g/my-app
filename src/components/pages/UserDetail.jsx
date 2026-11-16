@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { API_BASE_URL } from '../../api/apiConfig';
 
 function ArticleDetail() {
   const { articleId } = useParams();
@@ -8,7 +9,7 @@ function ArticleDetail() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:3000/articles/${articleId}`)
+    fetch(`${API_BASE_URL}/articles/${articleId}`)
       .then((response) => {
         if (response.status === 404) {
           throw new Error('記事が見つかりませんでした。');
