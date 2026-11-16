@@ -3,7 +3,7 @@
     {
       "id": "1",
       "title": "React Hooksの基本",
-      "content": "useStateを使うと、コンポーネント内で状態を管理できます。（importを忘れないこと!）",
+      "content": "useStateを使うと、コンポーネント内で状態を管理できます。＜importを忘れないこと!＞",
       "author": "Tech Taro",
       "createdAt": "2026-11-14T09:00:00.000Z"
     },
@@ -17,9 +17,23 @@
     {
       "title": "ネストしたオブジェクトの分割代入",
       "author": "Tech Mie",
-      "content": "●オブジェクトの中に、さらにオブジェクトがある場合です\nconst user = {\n  name: \"山田太郎\",\n  profile: {\n    hobby: \"プログラミング\",\n    learning: \"React\"\n  }\n};\n\n\n●内側の値も取り出せます\nconst {\n  name,\n  profile: { hobby, learning }\n} = user;\n",
+      "content": "## オブジェクトの中に、さらにオブジェクトがある場合です。\n\n```js\nconst user = {\n  name: \"山田太郎\",\n  profile: {\n    hobby: \"プログラミング\",\n    learning: \"React\"\n  }\n};\n```\n\n## 内側の値も取り出せます。\n\n```js\nconst {\n  name,\n  profile: { hobby, learning }\n} = user;\n```",
       "createdAt": "2026-11-15T06:35:02.988Z",
       "id": "RUJFrl5"
+    },
+    {
+      "title": "Markdown表示への変換",
+      "author": "Tech Taro",
+      "content": "本文を安全にReactの画面要素へ変換する react-markdown を使えます。公式の説明でも、基本の見出しや太字などを表示する方法が案内されています。\nhttps://github.com/remarkjs/react-markdown#readme",
+      "createdAt": "2026-11-16T01:41:36.567Z",
+      "id": "0ZAPfg0"
+    },
+    {
+      "title": "React Hooksつかってみよう！",
+      "author": "Tech Mie",
+      "content": "# React Hooksの基本\n\nReact Hooksを使うと、関数コンポーネントで状態を管理できます。\n\n## useStateの使い方\n\n`useState`を使うと、値とその更新関数を作れます。\n\n- 現在の値を保存する\n- ボタン操作などで値を更新する\n\n### コード例\n\n```jsx\nconst [count, setCount] = useState(0);\n```\n\n**ポイント：** 値を変更すると、Reactが画面を更新します。",
+      "createdAt": "2026-11-16T01:53:36.259Z",
+      "id": "1n6Lv1G"
     }
   ]
 }

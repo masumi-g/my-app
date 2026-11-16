@@ -72,7 +72,7 @@ function Articles() {
 
       {!loading && !error && articles.length > 0 && filteredArticles.length === 0 && (
       <p className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-800">
-        検索に一致する記事はありません。
+        記事が見つかりません。
       </p>
       )}
 

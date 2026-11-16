@@ -30,6 +30,10 @@ function App() {
         <Route path="/" element={<Articles />} />
         <Route path="/articles" element={<Articles />} />
         <Route path="/articles/new" element={user ? <ArticleForm /> : <Navigate to="/" replace />} />
+        <Route
+          path="/create"
+          element={user ? <ArticleForm /> : <Navigate to="/" replace />}
+        />
         <Route path="/articles/:articleId" element={<ArticleDetail />} />
         <Route
           path="/articles/:articleId/edit"

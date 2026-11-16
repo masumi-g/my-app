@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useArticle } from '../../hooks/useArticle';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_BASE_URL } from '../../api/apiConfig';
+import ReactMarkdown from 'react-markdown';
 
 function ArticleForm() {
   const { articleId } = useParams();
@@ -104,7 +105,7 @@ function ArticleForm() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-8 text-left">
-      <h1>{isEditMode ? '記事を編集' : '記事を投稿'}</h1>
+      <h1>{isEditMode ? '記事の編集' : '記事を投稿'}</h1>
 
       <form
         onSubmit={handleSubmit}
@@ -159,6 +160,22 @@ function ArticleForm() {
           />
         </div>
 
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-slate-800">
+            プレビュー
+          </h2>
+
+          <div className="article-markdown min-h-32 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            {formData.content.trim() ? (
+              <ReactMarkdown>{formData.content}</ReactMarkdown>
+            ) : (
+              <p className="m-0 text-slate-500">
+                本文を入力すると、ここにプレビューが表示されます。
+              </p>
+            )}
+          </div>
+        </div>
+
         {submitError && <p>{submitError}</p>}
 
         <button 
@@ -168,7 +185,7 @@ function ArticleForm() {
           {isSubmitting
             ? '保存中...'
             : isEditMode
-              ? '変更を保存'
+              ? '更新する'
               : '記事を投稿する'}
         </button>
       </form>

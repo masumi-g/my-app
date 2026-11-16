@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useArticle } from '../../hooks/useArticle';
 import { API_BASE_URL } from '../../api/apiConfig';
 import { useAuth } from '../../contexts/AuthContext';
+import ReactMarkdown from 'react-markdown';
 
 function ArticleDetail() {
   const { user } = useAuth();
@@ -69,9 +70,9 @@ function ArticleDetail() {
           {new Date(article.createdAt).toLocaleDateString('ja-JP')}
         </p>
 
-        <p className="mt-6 whitespace-pre-wrap leading-7 text-slate-700">
-          {article.content}
-        </p>
+        <div className="article-markdown mt-6">
+          <ReactMarkdown>{article.content}</ReactMarkdown>
+        </div>
       </article>
 
       {user?.name === article.author && (
