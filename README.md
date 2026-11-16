@@ -1,16 +1,92 @@
-# React + Vite
+# TechShare
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+技術に関する記事を投稿・共有・閲覧できるWebアプリです。記事本文はMarkdown形式で記述でき、投稿・編集画面ではプレビューを確認できます。
 
-Currently, two official plugins are available:
+## ソースコード
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- GitHubリポジトリ：[https://github.com/masumi-g/my-app](https://github.com/masumi-g/my-app)
 
-## React Compiler
+## 公開デモ
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- フロントエンド（Vercel）：[https://my-app-roan-pi-94.vercel.app/](https://my-app-roan-pi-94.vercel.app/)
+- 記事API（Render）：[https://my-app-7f2z.onrender.com/articles](https://my-app-7f2z.onrender.com/articles)
 
-## Expanding the ESLint configuration
+## 主な機能
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 記事一覧と記事詳細の表示
+- 記事の投稿・編集・削除
+- Markdown形式の記事本文と入力プレビュー
+- タイトル・本文を対象にした記事検索
+- ログイン・ログアウトの画面操作
+- 投稿者に応じた編集・削除ボタンの表示制御
+
+## 使用技術と選んだ理由
+
+| 技術 | 使用した理由 |
+|---|---|
+| React | 画面をコンポーネントに分け、入力状態やログイン状態に応じて表示を切り替えやすいためです。 |
+| Vite | 開発中の画面確認や、本番用ファイルのビルドを簡潔に行えるためです。 |
+| React Router | 記事一覧・詳細・投稿・編集など、URLに応じた画面遷移を実装するためです。 |
+| Tailwind CSS | クラスを使って余白や色、入力欄などの見た目を調整しやすいためです。 |
+| react-markdown | Markdown形式の記事本文を、Reactの画面内で見出しやリストなどに変換して表示するためです。 |
+| json-server | `db.json`を使って記事データのAPIを用意でき、フロントエンドの機能開発に集中できるためです。 |
+
+## 工夫した点・難しかった点
+
+### 工夫した点
+
+- 記事の取得・投稿・編集・削除、検索、ログイン状態の管理をカスタムフックやContextに分け、画面表示のコードに処理が集中しすぎないよう整理しました。
+- 合格基準を一項目ずつ確認し、実装後に実際の画面で動作を確かめてから次へ進むようにしました。問題が起きたときは、その機能を切り分けて修正しました。
+- AIに手順を相談しながら進めましたが、提案を一つずつ自分のプロジェクトに取り入れ、保存後に画面を操作して確認しました。
+
+### 難しかった点
+
+- 初心者にとって、必要なパッケージや開発サーバー、記事APIの準備と役割を理解することが難しかったです。
+- 記事の編集後に変更内容を画面へ反映することや、Markdownのプレビューと詳細表示を整えることに試行錯誤しました。
+- 公開時には、VercelのフロントエンドとRenderの記事APIを接続する環境変数の設定や、記事詳細のURLを直接開けるようにする設定に取り組みました。
+
+特に、機能の実装だけでなく、動作確認や公開環境の準備にも時間をかけました。AIに相談しながら一つずつ確認して進めたことが、完成につながりました。
+
+## ローカルでの起動方法
+
+### 1. リポジトリを取得して依存関係をインストール
+
+```bash
+git clone https://github.com/masumi-g/my-app.git
+cd my-app
+npm install
+```
+
+### 2. API接続先を設定
+
+プロジェクトのルートに`.env.local`を作成し、次の内容を記述します。
+
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+`.env.local`はローカル環境の設定ファイルです。GitHubには登録しないでください。
+
+### 3. JSON Serverを起動
+
+ターミナルで次のコマンドを実行します。
+
+```bash
+npx json-server --watch db.json --port 3000
+```
+
+### 4. Viteを起動
+
+別のターミナルを開き、次のコマンドを実行します。
+
+```bash
+npm run dev
+```
+
+表示されたURLをブラウザーで開きます。通常は`http://localhost:5173`です。
+
+## デモについて
+
+フロントエンドはVercel、記事APIはRenderの無料サービスで公開しています。Renderの無料APIサービスは停止・再起動・再デプロイ時に記事データの変更が失われることがあります。
+
+ログイン機能は画面操作確認用の簡易機能で、実際の本人確認や本番運用向けの認証ではありません。個人情報や重要な情報は入力しないでください。
