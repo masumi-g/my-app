@@ -4,7 +4,7 @@
 
 import './App.css'
 import { useAuth } from './contexts/AuthContext';
-import { Navigate, Routes, Route, NavLink } from 'react-router-dom';
+import { Navigate, Routes, Route } from 'react-router-dom';
 import Home  from "./components/pages/Home";
 import Users from "./components/pages/users";
 import UserDetail from "./components/pages/UserDetail";
@@ -12,19 +12,12 @@ import Login from './components/pages/Login';
 import Articles from "./components/pages/Articles";
 import ArticleDetail from "./components/pages/ArticleDetail";
 import ArticleForm from "./components/pages/ArticleForm";
+import Layout from './components/templates/Layout';
 
 function App() {
   const { user } = useAuth();
   return (
-    <>
-      <nav>
-        <NavLink to="/" end>記事一覧</NavLink>
-        {' | '}
-        <NavLink to="/login">
-          {user ? `アカウント（${user.name}）` : 'ログイン'}
-        </NavLink>
-      </nav>
-
+    <Layout>
       <Routes>
         {/* 考査課題：記事一覧をTOPページにする */}
         <Route path="/" element={<Articles />} />
@@ -47,7 +40,7 @@ function App() {
 
         <Route path="/login" element={<Login />} />
       </Routes>
-    </>
+    </Layout>
   );
 }
 

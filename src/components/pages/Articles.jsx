@@ -1,18 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useArticles } from '../../hooks/useArticles';
+import { useSearch } from '../../hooks/useSearch';
 
 function Articles() {
   const { articles, loading, error } = useArticles();
   const [searchTerm, setSearchTerm] = useState('');
-
-  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
-
-  const filteredArticles = articles.filter((article) => {
-  const searchableText = `${article.title} ${article.content}`.toLowerCase();
-  return searchableText.includes(normalizedSearchTerm);
-  });
-
+  const filteredArticles = useSearch(articles, searchTerm);
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-8 text-left">
