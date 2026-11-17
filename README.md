@@ -85,6 +85,12 @@ npm run dev
 
 表示されたURLをブラウザーで開きます。通常は`http://localhost:5173`です。
 
+※補足
+fnmを使っている場合は、npmコマンドを実行する前にPowerShellで次のコマンドを実行してください。fnmを使っていない場合、この手順は不要です。
+```powershell
+fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
+```
+
 ## デモについて
 
 フロントエンドはVercel、記事APIはRenderの無料サービスで公開しています。Renderの無料APIサービスは停止・再起動・再デプロイ時に記事データの変更が失われることがあります。
